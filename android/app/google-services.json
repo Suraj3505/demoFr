@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "831070885144",
+    "firebase_url": "https://facer-e53e0.firebaseio.com",
+    "project_id": "facer-e53e0",
+    "storage_bucket": "facer-e53e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831070885144:android:908b41a4b81a0ad0c3fa6d",
+        "android_client_info": {
+          "package_name": "demo.FR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831070885144-6bdud1qklmdvg7u47bb3en7br69itrqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh3O928fbVoS62XjOMbv0gKVZff-8stug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831070885144-6bdud1qklmdvg7u47bb3en7br69itrqt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "831070885144-31v8ag9i4tv81ha7achi7mcbo15vij9c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "faceR"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
