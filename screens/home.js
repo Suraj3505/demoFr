@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button } from 'react-native';
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   const pressHandler = () => {
     const userName = 'fplabs_test';
     const passWord = 'W9chAfr&bAthlf0owlWr';
-    // console.log(userName, passWord);
+    console.log(userName, passWord);
     // navigation.navigate('faceDetect');
 
     fetch('https://preproduction.signzy.tech/api/v2/patrons/login', {
@@ -22,14 +22,25 @@ export default function Home({navigation}) {
     })
       .then(resp => resp.json())
       .then(data => {
-        navigation.navigate('faceDetect', {loginData: data});
+        console.log(data);
+        navigation.navigate('faceDetect', { loginData: data });
       })
       .catch(err => console.log(err));
+  };
+
+  const pressHandlerWithOutSignZy = () => {
+    navigation.navigate('faceDetect', { loginData: null });
   };
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
-      <Button title="open camera" onPress={pressHandler} />
+      <Button style={styles.btn} title="open camera" onPress={pressHandler} />
+      <Text> </Text>
+      <Button
+        style={styles.btn}
+        title="open camera 2"
+        onPress={pressHandlerWithOutSignZy}
+      />
     </View>
   );
 }
@@ -37,5 +48,8 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     padding: 24,
+    flex: 1,
+    // backgroundColor: 'red',
   },
+  btn: {},
 });

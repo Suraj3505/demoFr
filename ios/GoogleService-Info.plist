@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>56669252812-7j2kd66jen3v7ok2bgaieikch94qo5nc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.56669252812-7j2kd66jen3v7ok2bgaieikch94qo5nc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCFlEahAc8m6n62chGhuporJH3rO9MekO0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>56669252812</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.test.fr</string>
+	<key>PROJECT_ID</key>
+	<string>facerecognition-7dcd0</string>
+	<key>STORAGE_BUCKET</key>
+	<string>facerecognition-7dcd0.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:56669252812:ios:c762df3901870cedf12669</string>
+	<key>DATABASE_URL</key>
+	<string>https://facerecognition-7dcd0.firebaseio.com</string>
+</dict>
+</plist>

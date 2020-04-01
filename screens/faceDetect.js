@@ -8,40 +8,39 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
-// import { withNavigationFocus } from 'react-navigation'
+import CameraRoll from '@react-native-community/cameraroll';
+import TextButton from '../components/textBtn';
+
 class FaceDetect extends Component {
   state = {
     faceDetection: true,
     faces: [],
     firstPicture: {},
     secondPicture: {},
-    type: 'front',
+    frondID: {},
+    backID: {},
+    type: 'back',
     pictureIn: 'first',
     recording: false,
     processing: false,
     video: {},
     uploadFirstImage: {},
     uploadSecondImage: {},
-    // isVideo: false,
+    uploadFrontId: {},
+    uploadBackId: {},
+    idCardPhoto: 'front',
   };
 
   render() {
     const {recording, processing, faces} = this.state;
+
     let button = (
-      <TouchableOpacity
-        onPress={this.startRecording.bind(this)}
-        style={styles.capture}>
-        <Text style={{fontSize: 14}}> RECORD </Text>
-      </TouchableOpacity>
+      <TextButton onPress={this.startRecording.bind(this)} text={'RECORD'} />
     );
 
     if (recording) {
       button = (
-        <TouchableOpacity
-          onPress={this.stopRecording.bind(this)}
-          style={styles.capture}>
-          <Text style={{fontSize: 14}}> STOP </Text>
-        </TouchableOpacity>
+        <TextButton onPress={this.stopRecording.bind(this)} text={'STOP'} />
       );
     }
 
@@ -88,55 +87,40 @@ class FaceDetect extends Component {
           style={{
             flex: 0,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'flex-center',
             flexWrap: 'wrap',
           }}>
-          <TouchableOpacity
-            onPress={this.handleDetectPress.bind(this)}
-            style={styles.capture}>
-            <Text style={{fontSize: 14}}>Detect</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.verifyFaces} style={styles.capture}>
-            <Text style={{fontSize: 14}}>Verify</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.compareFaces} style={styles.capture}>
-            <Text style={{fontSize: 14}}>compare</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.openPhotos} style={styles.capture}>
-            <Text style={{fontSize: 14}}>Open Photos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.flip} style={styles.capture}>
-            <Text style={{fontSize: 14}}>Flip</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.openVideo} style={styles.capture}>
-            <Text style={{fontSize: 14}}>Open Video</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.uploadImage} style={styles.capture}>
-            <Text style={{fontSize: 14}}>upload</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.logout} style={styles.capture}>
-            <Text style={{fontSize: 14}}>logout</Text>
-          </TouchableOpacity>
+          <TextButton onPress={this.handleDetectPress} text={'Detect'} />
+          <TextButton onPress={this.verifyFaces} text={'Verify'} />
+          <TextButton onPress={this.compareFaces} text={'compare'} />
+          <TextButton onPress={this.openPhotos} text={'Open Photos'} />
+          <TextButton onPress={this.flip} text={'Flip'} />
+          {/* <TextButton onPress={this.openVideo} text={'Open Video'} /> */}
+          {/* <TextButton onPress={this.uploadImage} text={'uploadImage'} /> */}
+          <TextButton onPress={this.logout} text={'logout'} />
+          <TextButton onPress={this.demo} text={'demo'} />
+          <TextButton
+            onPress={this.idCapture}
+            text={this.state.idCardPhoto == 'front' ? 'Front' : 'Back'}
+          />
+          <TextButton onPress={this.uploadVideo} text={'UploadVideo'} />
           {button}
         </View>
       </View>
     );
   }
-
+  demo = () => {
+    // CameraRoll.saveToCameraRoll(this.state.video.uri);
+    console.log('working');
+  };
   async startRecording() {
     this.setState({recording: true, processing: true});
     // default to mp4 for android as codec is not set
-    const options = {maxDuration: 2};
+    const options = {maxDuration: 5};
     const data = await this.camera.recordAsync(options);
     console.log(data);
-    console.log(await this.toBase64(data.uri));
+    // console.log(await this.toBase64(data.uri));
+    // CameraRoll.saveToCameraRoll(data.uri);
     this.setState({video: data});
     this.setState({recording: false, processing: false});
     this.openVideo();
@@ -168,29 +152,45 @@ class FaceDetect extends Component {
     if (this.camera) {
       const options = {width: 300, quality: 0.5, base64: true};
       const data = await this.camera.takePictureAsync(options);
-      if (bucket == 'first') {
-        this.setState({firstPicture: data});
-        this.uploadImage('first');
-      } else {
-        this.setState({secondPicture: data});
-        this.uploadImage('second');
+
+      switch (bucket) {
+        case 'first':
+          this.setState({firstPicture: data});
+          this.uploadImage('first');
+          break;
+
+        case 'second':
+          this.setState({secondPicture: data});
+          this.uploadImage('second');
+          break;
+
+        case 'frondID':
+          this.setState({frondID: data});
+          this.uploadID('front');
+          break;
+
+        case 'backID':
+          this.setState({backID: data});
+          this.uploadID('front');
+          break;
       }
+      console.log(this.state);
       // CameraRoll.saveToCameraRoll(data.uri, 'photo');
       // this.setState({picture: data});
     }
   };
 
   handleDetectPress = () => {
+    this.setState({pictureIn: 'first'});
     this.setState({faceDetection: true});
     // this.setState({isVideo: true});
-    this.setState({pictureIn: 'first'});
   };
 
   verifyFaces = () => {
+    this.setState({pictureIn: 'second'});
     this.setState({faceDetection: true});
     // this.setState({isVideo: false});
     this.setState({processing: true});
-    this.setState({pictureIn: 'second'});
   };
 
   handleFaceDetection = async ({faces}) => {
@@ -246,13 +246,58 @@ class FaceDetect extends Component {
         } else {
           this.setState({uploadSecondImage: data.file});
           this.compareFaces();
+          // this.logout();
         }
         console.log(this.state);
       })
       .catch(err => console.log(err));
   };
 
-  uploadVideo = () => {};
+  uploadVideo = bucket => {
+    console.log(this.state);
+    const video = this.state.video;
+    const formData = new FormData();
+    formData.append('file', video.uri);
+    // formData.append('ttl', '2 mins');
+    fetch('https://preproduction-persist.signzy.tech/api/files/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data);
+        // console.log(this.state);
+      })
+      .catch(err => console.log(err));
+  };
+
+  uploadID = bucket => {
+    const picture =
+      bucket == 'front' ? this.state.frontID.base64 : this.state.backID.base64;
+    const formData = {
+      base64String: picture,
+      mimetype: 'image/jpg',
+      ttl: '2 mins',
+    };
+    fetch('https://preproduction-persist.signzy.tech/api/base64', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data);
+        if (bucket == 'front') {
+          this.setState({uploadFrontId: data.file});
+        } else {
+          this.setState({uploadBackId: data.file});
+        }
+        console.log(this.state);
+      })
+      .catch(err => console.log(err));
+  };
 
   compareFaces = () => {
     const loginData = this.props.navigation.getParam('loginData');
@@ -293,9 +338,20 @@ class FaceDetect extends Component {
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
+      console.log(reader);
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
+
+  idCapture = () => {
+    const type = this.state.idCardPhoto;
+    this.uploadID(type);
+    this.setState({idCardPhoto: type == 'front' ? 'back' : 'front'});
+  };
+
+  extractPhoto = () => {
+    console.log('extrction started');
+  };
 }
 
 const styles = StyleSheet.create({
@@ -325,17 +381,3 @@ const styles = StyleSheet.create({
 });
 
 export default FaceDetect;
-// export default withNavigationFocus(FaceDetect);
-// const toBase64 = file => new Promise((resolve, reject) => {
-//   const reader = new FileReader();
-//   reader.readAsDataURL(file);
-//   reader.onload = () => resolve(reader.result);
-//   reader.onerror = error => reject(error);
-// });
-
-// async function Main() {
-//  const file = document.querySelector('#myfile').files[0];
-//  console.log(await toBase64(file));
-// }
-
-// Main();

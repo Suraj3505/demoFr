@@ -1,6 +1,5 @@
 import React from 'react';
-import Home from './screens/home';
-import Navigator from './routes/homeStack';
+import Navigator from './routes/faceStack';
 export default function App() {
   return <Navigator />;
 }
